@@ -1,6 +1,7 @@
-import java.util.Scanner;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 
 public class Main {
 
@@ -13,7 +14,7 @@ public class Main {
         try {
 
             DateTimeFormatter formatter =
-                DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                    DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
             LocalDate.parse(date, formatter);
 
@@ -30,7 +31,7 @@ public class Main {
         LocalDate today = LocalDate.now();
 
         DateTimeFormatter formatter =
-            DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         return today.format(formatter);
     }
@@ -39,8 +40,7 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
 
-        ExpenseManager manager =
-            new ExpenseManager();
+        ExpenseManager manager = new ExpenseManager();
 
         manager.loadExpenses();
 
@@ -67,9 +67,7 @@ public class Main {
 
             if (!sc.hasNextInt()) {
 
-                System.out.println(
-                    "Please enter a valid number!"
-                );
+                System.out.println("Please enter a valid number!");
 
                 sc.nextLine();
 
@@ -77,43 +75,39 @@ public class Main {
             }
 
             int choice = sc.nextInt();
-
             sc.nextLine();
 
-            // ADD EXPENSE
+            // Add Expense
             if (choice == 1) {
 
-                Expense expense =
-                    new Expense();
+                Expense expense = new Expense();
 
-                expense.id =
-                    manager.getNextId();
+                expense.setId(manager.getNextId());
 
                 while (true) {
 
-                    System.out.print(
-                        "Enter amount: "
-                    );
+                    System.out.print("Enter amount: ");
 
                     if (sc.hasNextDouble()) {
 
-                        expense.amount =
-                            sc.nextDouble();
-
+                        double amount = sc.nextDouble();
                         sc.nextLine();
 
-                        if (expense.amount > 0) {
+                        if (amount > 0) {
+
+                            expense.setAmount(amount);
+
                             break;
                         }
 
                         System.out.println(
-                            "Amount must be greater than 0."
+                                "Amount must be greater than 0."
                         );
 
                     } else {
 
                         System.out.println(
-                            "Enter a valid amount."
+                                "Enter a valid amount."
                         );
 
                         sc.nextLine();
@@ -122,45 +116,46 @@ public class Main {
 
                 while (true) {
 
-                    System.out.print(
-                        "Enter category: "
-                    );
+                    System.out.print("Enter category: ");
 
-                    expense.category =
-                        sc.nextLine().trim();
+                    String category =
+                            sc.nextLine().trim();
 
-                    if (!expense.category.isEmpty()) {
+                    if (!category.isEmpty()) {
+
+                        expense.setCategory(category);
+
                         break;
                     }
 
                     System.out.println(
-                        "Category cannot be empty."
+                            "Category cannot be empty."
                     );
                 }
 
                 while (true) {
 
-                    System.out.print(
-                        "Enter description: "
-                    );
+                    System.out.print("Enter description: ");
 
-                    expense.description =
-                        sc.nextLine().trim();
+                    String description =
+                            sc.nextLine().trim();
 
-                    if (!expense.description.isEmpty()) {
+                    if (!description.isEmpty()) {
+
+                        expense.setDescription(description);
+
                         break;
                     }
 
                     System.out.println(
-                        "Description cannot be empty."
+                            "Description cannot be empty."
                     );
                 }
 
-                expense.date =
-                    getCurrentDate();
+                expense.setDate(getCurrentDate());
 
                 System.out.println(
-                    "Date: " + expense.date
+                        "Date: " + expense.getDate()
                 );
 
                 manager.addExpense(expense);
@@ -168,69 +163,61 @@ public class Main {
                 manager.saveExpenses();
 
                 System.out.println(
-                    "Expense added successfully!"
+                        "Expense added successfully!"
                 );
             }
 
-            // VIEW EXPENSES
+            // View Expenses
             else if (choice == 2) {
 
                 manager.viewExpenses();
             }
 
-            // TOTAL
+            // Total
             else if (choice == 3) {
 
                 System.out.printf(
-                    "Total Expense: ₹%.2f%n",
-                    manager.getTotal()
+                        "Total Expense: ₹%.2f%n",
+                        manager.getTotal()
                 );
             }
 
-            // SEARCH
+            // Search by Category
             else if (choice == 4) {
 
-                System.out.print(
-                    "Enter category: "
-                );
+                System.out.print("Enter category: ");
 
                 String category =
-                    sc.nextLine().trim();
+                        sc.nextLine().trim();
 
                 if (category.isEmpty()) {
 
                     System.out.println(
-                        "Category cannot be empty."
+                            "Category cannot be empty."
                     );
 
                 } else {
 
-                    manager.searchByCategory(
-                        category
-                    );
+                    manager.searchByCategory(category);
                 }
             }
 
-            // DELETE
+            // Delete Expense
             else if (choice == 5) {
 
-                System.out.print(
-                    "Enter expense ID: "
-                );
+                System.out.print("Enter expense ID: ");
 
                 if (sc.hasNextInt()) {
 
-                    int id =
-                        sc.nextInt();
-
+                    int id = sc.nextInt();
                     sc.nextLine();
 
                     System.out.print(
-                        "Are you sure you want to delete this expense? (yes/no): "
+                            "Are you sure you want to delete this expense? (yes/no): "
                     );
 
                     String confirmation =
-                        sc.nextLine();
+                            sc.nextLine();
 
                     if (confirmation.equalsIgnoreCase("yes")) {
 
@@ -241,51 +228,43 @@ public class Main {
                     } else {
 
                         System.out.println(
-                            "Delete cancelled."
+                                "Delete cancelled."
                         );
                     }
 
                 } else {
 
-                    System.out.println(
-                        "Invalid ID!"
-                    );
+                    System.out.println("Invalid ID!");
 
                     sc.nextLine();
                 }
             }
 
-            // EDIT
+            // Edit Expense
             else if (choice == 6) {
 
                 System.out.print(
-                    "Enter expense ID to edit: "
+                        "Enter expense ID to edit: "
                 );
 
                 if (!sc.hasNextInt()) {
 
-                    System.out.println(
-                        "Invalid ID!"
-                    );
+                    System.out.println("Invalid ID!");
 
                     sc.nextLine();
 
                     continue;
                 }
 
-                int id =
-                    sc.nextInt();
-
+                int id = sc.nextInt();
                 sc.nextLine();
 
-                System.out.print(
-                    "Enter new amount: "
-                );
+                System.out.print("Enter new amount: ");
 
                 if (!sc.hasNextDouble()) {
 
                     System.out.println(
-                        "Invalid amount!"
+                            "Invalid amount!"
                     );
 
                     sc.nextLine();
@@ -293,47 +272,43 @@ public class Main {
                     continue;
                 }
 
-                double amount =
-                    sc.nextDouble();
-
+                double amount = sc.nextDouble();
                 sc.nextLine();
 
                 if (amount <= 0) {
 
                     System.out.println(
-                        "Amount must be greater than 0."
+                            "Amount must be greater than 0."
                     );
 
                     continue;
                 }
 
-                System.out.print(
-                    "Enter new category: "
-                );
+                System.out.print("Enter new category: ");
 
                 String category =
-                    sc.nextLine().trim();
+                        sc.nextLine().trim();
 
                 if (category.isEmpty()) {
 
                     System.out.println(
-                        "Category cannot be empty."
+                            "Category cannot be empty."
                     );
 
                     continue;
                 }
 
                 System.out.print(
-                    "Enter new description: "
+                        "Enter new description: "
                 );
 
                 String description =
-                    sc.nextLine().trim();
+                        sc.nextLine().trim();
 
                 if (description.isEmpty()) {
 
                     System.out.println(
-                        "Description cannot be empty."
+                            "Description cannot be empty."
                     );
 
                     continue;
@@ -344,113 +319,109 @@ public class Main {
                 while (true) {
 
                     System.out.print(
-                        "Enter new date (DD-MM-YYYY): "
+                            "Enter new date (DD-MM-YYYY): "
                     );
 
                     date =
-                        sc.nextLine().trim();
+                            sc.nextLine().trim();
 
                     if (isValidDate(date)) {
                         break;
                     }
 
                     System.out.println(
-                        "Invalid date! Use DD-MM-YYYY."
+                            "Invalid date! Use DD-MM-YYYY."
                     );
                 }
 
                 manager.editExpense(
-                    id,
-                    amount,
-                    category,
-                    description,
-                    date
+                        id,
+                        amount,
+                        category,
+                        description,
+                        date
                 );
 
                 manager.saveExpenses();
             }
 
-            // MONTHLY TOTAL
+            // Monthly Total
             else if (choice == 7) {
 
                 System.out.print(
-                    "Enter month (MM): "
+                        "Enter month (MM): "
                 );
 
                 String month =
-                    sc.nextLine().trim();
+                        sc.nextLine().trim();
 
                 if (!month.matches(
                         "0[1-9]|1[0-2]")) {
 
                     System.out.println(
-                        "Invalid month! Enter 01 to 12."
+                            "Invalid month! Enter 01 to 12."
                     );
 
                     continue;
                 }
 
                 double total =
-                    manager.getMonthlyTotal(
-                        month
-                    );
+                        manager.getMonthlyTotal(month);
 
                 System.out.printf(
-                    "Total for month %s: ₹%.2f%n",
-                    month,
-                    total
+                        "Total for month %s: ₹%.2f%n",
+                        month,
+                        total
                 );
             }
 
-            // CATEGORY TOTAL
+            // Category Total
             else if (choice == 8) {
 
                 System.out.print(
-                    "Enter category: "
+                        "Enter category: "
                 );
 
                 String category =
-                    sc.nextLine().trim();
+                        sc.nextLine().trim();
 
                 if (category.isEmpty()) {
 
                     System.out.println(
-                        "Category cannot be empty."
+                            "Category cannot be empty."
                     );
 
                 } else {
 
                     double total =
-                        manager.getCategoryTotal(
-                            category
-                        );
+                            manager.getCategoryTotal(category);
 
                     System.out.printf(
-                        "Total spent on %s: ₹%.2f%n",
-                        category,
-                        total
+                            "Total spent on %s: ₹%.2f%n",
+                            category,
+                            total
                     );
                 }
             }
 
-            // EXPENSE COUNT
+            // Expense Count
             else if (choice == 9) {
 
                 System.out.println(
-                    "Total number of expenses: "
-                    + manager.getExpenseCount()
+                        "Total number of expenses: "
+                                + manager.getExpenseCount()
                 );
             }
 
-            // CLEAR ALL
+            // Clear All
             else if (choice == 10) {
 
                 System.out.print(
-                    "Are you sure you want to clear ALL expenses? (yes/no): "
+                        "Are you sure you want to clear ALL expenses? (yes/no): "
                 );
 
                 String confirmation =
-                    sc.nextLine();
+                        sc.nextLine();
 
                 if (confirmation.equalsIgnoreCase("yes")) {
 
@@ -461,22 +432,22 @@ public class Main {
                 } else {
 
                     System.out.println(
-                        "Clear operation cancelled."
+                            "Clear operation cancelled."
                     );
                 }
             }
 
-            // EXIT
+            // Exit
             else if (choice == 11) {
 
                 manager.saveExpenses();
 
                 System.out.println(
-                    "Expenses saved successfully!"
+                        "Expenses saved successfully!"
                 );
 
                 System.out.println(
-                    "Thank you for using Expense Tracker!"
+                        "Thank you for using Expense Tracker!"
                 );
 
                 break;
@@ -485,7 +456,7 @@ public class Main {
             else {
 
                 System.out.println(
-                    "Invalid choice!"
+                        "Invalid choice!"
                 );
             }
         }

@@ -1,9 +1,10 @@
-import java.util.ArrayList;
+
 import java.io.*;
+import java.util.ArrayList;
 
 public class ExpenseManager {
 
-    ArrayList<Expense> expenses = new ArrayList<>();
+    private ArrayList<Expense> expenses = new ArrayList<>();
 
     public void addExpense(Expense expense) {
         expenses.add(expense);
@@ -14,9 +15,8 @@ public class ExpenseManager {
         int maxId = 0;
 
         for (Expense expense : expenses) {
-
-            if (expense.id > maxId) {
-                maxId = expense.id;
+            if (expense.getId() > maxId) {
+                maxId = expense.getId();
             }
         }
 
@@ -43,7 +43,7 @@ public class ExpenseManager {
         printTableFooter();
 
         System.out.println(
-            "Total number of expenses: " + expenses.size()
+                "Total number of expenses: " + expenses.size()
         );
     }
 
@@ -51,39 +51,39 @@ public class ExpenseManager {
 
         System.out.println();
         System.out.println(
-            "--------------------------------------------------------------------------------"
+                "--------------------------------------------------------------------------------"
         );
 
         System.out.printf(
-            "%-5s %-12s %-15s %-25s %-15s%n",
-            "ID",
-            "Amount",
-            "Category",
-            "Description",
-            "Date"
+                "%-5s %-12s %-15s %-25s %-15s%n",
+                "ID",
+                "Amount",
+                "Category",
+                "Description",
+                "Date"
         );
 
         System.out.println(
-            "--------------------------------------------------------------------------------"
+                "--------------------------------------------------------------------------------"
         );
     }
 
     private void printExpense(Expense expense) {
 
         System.out.printf(
-            "%-5d ₹%-11.2f %-15s %-25s %-15s%n",
-            expense.id,
-            expense.amount,
-            expense.category,
-            expense.description,
-            expense.date
+                "%-5d ₹%-11.2f %-15s %-25s %-15s%n",
+                expense.getId(),
+                expense.getAmount(),
+                expense.getCategory(),
+                expense.getDescription(),
+                expense.getDate()
         );
     }
 
     private void printTableFooter() {
 
         System.out.println(
-            "--------------------------------------------------------------------------------"
+                "--------------------------------------------------------------------------------"
         );
     }
 
@@ -92,7 +92,7 @@ public class ExpenseManager {
         double total = 0;
 
         for (Expense expense : expenses) {
-            total += expense.amount;
+            total += expense.getAmount();
         }
 
         return total;
@@ -106,14 +106,13 @@ public class ExpenseManager {
 
         for (Expense expense : expenses) {
 
-            if (expense.category.equalsIgnoreCase(category)) {
+            if (expense.getCategory().equalsIgnoreCase(category)) {
 
                 if (!found) {
                     printTableHeader();
                 }
 
                 printExpense(expense);
-
                 found = true;
             }
         }
@@ -131,8 +130,8 @@ public class ExpenseManager {
 
         for (Expense expense : expenses) {
 
-            if (expense.category.equalsIgnoreCase(category)) {
-                total += expense.amount;
+            if (expense.getCategory().equalsIgnoreCase(category)) {
+                total += expense.getAmount();
             }
         }
 
@@ -143,12 +142,12 @@ public class ExpenseManager {
 
         for (int i = 0; i < expenses.size(); i++) {
 
-            if (expenses.get(i).id == id) {
+            if (expenses.get(i).getId() == id) {
 
                 expenses.remove(i);
 
                 System.out.println(
-                    "Expense deleted successfully!"
+                        "Expense deleted successfully!"
                 );
 
                 return;
@@ -167,15 +166,15 @@ public class ExpenseManager {
 
         for (Expense expense : expenses) {
 
-            if (expense.id == id) {
+            if (expense.getId() == id) {
 
-                expense.amount = amount;
-                expense.category = category;
-                expense.description = description;
-                expense.date = date;
+                expense.setAmount(amount);
+                expense.setCategory(category);
+                expense.setDescription(description);
+                expense.setDate(date);
 
                 System.out.println(
-                    "Expense updated successfully!"
+                        "Expense updated successfully!"
                 );
 
                 return;
@@ -191,12 +190,12 @@ public class ExpenseManager {
 
         for (Expense expense : expenses) {
 
-            String[] parts = expense.date.split("-");
+            String[] parts = expense.getDate().split("-");
 
             if (parts.length == 3 &&
-                parts[1].equals(month)) {
+                    parts[1].equals(month)) {
 
-                total += expense.amount;
+                total += expense.getAmount();
             }
         }
 
@@ -208,7 +207,7 @@ public class ExpenseManager {
         expenses.clear();
 
         System.out.println(
-            "All expenses cleared successfully!"
+                "All expenses cleared successfully!"
         );
     }
 
@@ -216,17 +215,16 @@ public class ExpenseManager {
 
         try {
 
-            FileWriter writer =
-                new FileWriter("expenses.txt");
+            FileWriter writer = new FileWriter("expenses.txt");
 
             for (Expense expense : expenses) {
 
                 writer.write(
-                    expense.id + "," +
-                    expense.amount + "," +
-                    expense.category + "," +
-                    expense.description + "," +
-                    expense.date + "\n"
+                        expense.getId() + "," +
+                        expense.getAmount() + "," +
+                        expense.getCategory() + "," +
+                        expense.getDescription() + "," +
+                        expense.getDate() + "\n"
                 );
             }
 
@@ -234,9 +232,7 @@ public class ExpenseManager {
 
         } catch (IOException e) {
 
-            System.out.println(
-                "Error saving expenses."
-            );
+            System.out.println("Error saving expenses.");
         }
     }
 
@@ -248,46 +244,32 @@ public class ExpenseManager {
 
         try {
 
-            File file =
-                new File("expenses.txt");
+            File file = new File("expenses.txt");
 
             if (!file.exists()) {
                 return;
             }
 
             BufferedReader reader =
-                new BufferedReader(
-                    new FileReader(file)
-                );
+                    new BufferedReader(new FileReader(file));
 
             String line;
 
             while ((line = reader.readLine()) != null) {
 
-                String[] data =
-                    line.split(",", -1);
+                String[] data = line.split(",", -1);
 
                 if (data.length != 5) {
                     continue;
                 }
 
-                Expense expense =
-                    new Expense();
+                Expense expense = new Expense();
 
-                expense.id =
-                    Integer.parseInt(data[0]);
-
-                expense.amount =
-                    Double.parseDouble(data[1]);
-
-                expense.category =
-                    data[2];
-
-                expense.description =
-                    data[3];
-
-                expense.date =
-                    data[4];
+                expense.setId(Integer.parseInt(data[0]));
+                expense.setAmount(Double.parseDouble(data[1]));
+                expense.setCategory(data[2]);
+                expense.setDescription(data[3]);
+                expense.setDate(data[4]);
 
                 expenses.add(expense);
             }
@@ -296,9 +278,8 @@ public class ExpenseManager {
 
         } catch (Exception e) {
 
-            System.out.println(
-                "Error loading expenses."
-            );
+            System.out.println("Error loading expenses.");
         }
     }
 }
+
