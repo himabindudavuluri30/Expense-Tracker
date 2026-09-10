@@ -125,7 +125,6 @@ This project helped practice important Java concepts such as:
 * Methods
 * Exception Handling
 * File Handling
-* User Input using `Scanner`
 * Date Validation
 * Git and GitHub
 
