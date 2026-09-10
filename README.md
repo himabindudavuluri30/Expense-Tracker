@@ -141,11 +141,3 @@ Possible future upgrades include:
 * CSV/PDF export
 * Multiple user accounts
 
-## 👩‍💻 Author
-
-**Hima Bindu Davuluri**
-
-Computer Science & Engineering Student
-
----
-
